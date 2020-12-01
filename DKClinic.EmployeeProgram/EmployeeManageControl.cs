@@ -1,5 +1,8 @@
 ﻿using DKClinic.Data;
 using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace DKClinic.EmployeeProgram
 {
@@ -18,14 +21,13 @@ namespace DKClinic.EmployeeProgram
         public EmployeeManageControl(Employee employee) : this()
         {
             CurrentEmployeeInHere = employee;
+            
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (txbName.Text != "")
-                employeeBindingSource.DataSource = Dao.Employee.GetWithDepartmentAndPositionNameByName(txbName.Text);
-            else
-                employeeBindingSource.DataSource = Dao.Employee.GetWithDepartmentAndPositionName();
+            Cursor = Cursors.WaitCursor;
+            bgwSearch.RunWorkerAsync(txbName.Text);
         }
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -66,5 +68,26 @@ namespace DKClinic.EmployeeProgram
             OnbtnCancelClicked(employeeSelectFunctionControl);
         }
 
+        private void bgwSearch_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            string name = e.Argument.ToString();
+
+            List<Employee> namelist;
+
+            if (txbName.Text != "")
+            {
+                Thread.Sleep(2000);
+                namelist = Dao.Employee.GetWithDepartmentAndPositionNameByName(name);
+            }
+            else
+                namelist = Dao.Employee.GetWithDepartmentAndPositionName();
+            e.Result = namelist;
+        }
+
+        private void bgwSearch_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            employeeBindingSource.DataSource = (List<Employee>)e.Result;
+            Cursor = Cursors.Arrow;
+        }
     }
 }

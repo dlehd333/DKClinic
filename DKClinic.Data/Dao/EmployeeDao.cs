@@ -23,20 +23,24 @@ namespace DKClinic.Data
             }
         }
 
-        public Employee GetWithDepartmentAndPositionNameByName(string name)
+        public List<Employee> GetWithDepartmentAndPositionNameByName(string name)
         {
             using (var context = DKClinicEntities.Create())
             {
                 var query = from x in context.Employees.Where(x => x.Name == name)
                             select new { Employee = x, DepartmentName = x.Department.Name, PositionName = x.Position.Name };
-                var item = query.ToList().FirstOrDefault();
-
-                if (item == null) return null;
+                var list = query.ToList();
                 
-                item.Employee.DepartmentName = item.DepartmentName;
-                item.Employee.PositionName = item.PositionName;
+                if (list == null) return null;
 
-                return item.Employee;
+                foreach (var item in list)
+                {
+                    item.Employee.DepartmentName = item.DepartmentName;
+                    item.Employee.PositionName = item.PositionName;
+                }
+
+
+                return list.ConvertAll(x => x.Employee);
             }
         }
 
