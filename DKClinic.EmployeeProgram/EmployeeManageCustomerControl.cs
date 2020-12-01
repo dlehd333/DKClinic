@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -65,10 +66,32 @@ namespace DKClinic.EmployeeProgram
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if(txbName.Text == "")
-                customerBindingSource.DataSource = Dao.Customer.GetWithGenderName();
+            Cursor = Cursors.WaitCursor;
+            bgwSearch.RunWorkerAsync(txbName.Text);
+        }
+
+        private void bgwSearch_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string name = e.Argument.ToString();
+            
+            Thread.Sleep(1000);// BackgroundWork 테스트를 위한 딜레이
+
+            List<Customer> namelist;
+
+            if (name == "")
+                namelist = Dao.Customer.GetWithGenderName();
             else
-                customerBindingSource.DataSource = Dao.Customer.GetByName(txbName.Text);
+            {
+                namelist = Dao.Customer.GetByName(name);
+            }
+           
+            e.Result = namelist;
+        }
+
+        private void bgwSearch_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            customerBindingSource.DataSource = (List<Customer>)e.Result;
+            Cursor = Cursors.Arrow;
         }
     }
 }

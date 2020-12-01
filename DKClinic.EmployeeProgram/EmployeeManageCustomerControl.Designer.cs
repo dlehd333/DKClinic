@@ -42,6 +42,8 @@ namespace DKClinic.EmployeeProgram
             this.label1 = new System.Windows.Forms.Label();
             this.txbName = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.bgwSearch = new System.ComponentModel.BackgroundWorker();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCtmList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customerBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -50,10 +52,10 @@ namespace DKClinic.EmployeeProgram
             // 
             this.btnGoBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGoBack.Font = new System.Drawing.Font("Gulim", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnGoBack.Location = new System.Drawing.Point(772, 440);
+            this.btnGoBack.Location = new System.Drawing.Point(882, 550);
             this.btnGoBack.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnGoBack.Name = "btnGoBack";
-            this.btnGoBack.Size = new System.Drawing.Size(245, 76);
+            this.btnGoBack.Size = new System.Drawing.Size(280, 95);
             this.btnGoBack.TabIndex = 7;
             this.btnGoBack.Text = "뒤로가기";
             this.btnGoBack.UseVisualStyleBackColor = true;
@@ -63,10 +65,10 @@ namespace DKClinic.EmployeeProgram
             // 
             this.btnDelete.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnDelete.Font = new System.Drawing.Font("Gulim", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnDelete.Location = new System.Drawing.Point(434, 440);
+            this.btnDelete.Location = new System.Drawing.Point(496, 550);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(245, 76);
+            this.btnDelete.Size = new System.Drawing.Size(280, 95);
             this.btnDelete.TabIndex = 6;
             this.btnDelete.Text = "삭제";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -76,10 +78,10 @@ namespace DKClinic.EmployeeProgram
             // 
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnUpdate.Font = new System.Drawing.Font("Gulim", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnUpdate.Location = new System.Drawing.Point(88, 440);
+            this.btnUpdate.Location = new System.Drawing.Point(101, 550);
             this.btnUpdate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(245, 76);
+            this.btnUpdate.Size = new System.Drawing.Size(280, 95);
             this.btnUpdate.TabIndex = 5;
             this.btnUpdate.Text = "수정";
             this.btnUpdate.UseVisualStyleBackColor = true;
@@ -98,7 +100,7 @@ namespace DKClinic.EmployeeProgram
             this.birthdateDataGridViewTextBoxColumn,
             this.cellphoneDataGridViewTextBoxColumn});
             this.dgvCtmList.DataSource = this.customerBindingSource;
-            this.dgvCtmList.Location = new System.Drawing.Point(88, 8);
+            this.dgvCtmList.Location = new System.Drawing.Point(101, 10);
             this.dgvCtmList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvCtmList.MultiSelect = false;
             this.dgvCtmList.Name = "dgvCtmList";
@@ -107,7 +109,7 @@ namespace DKClinic.EmployeeProgram
             this.dgvCtmList.RowTemplate.Height = 27;
             this.dgvCtmList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvCtmList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCtmList.Size = new System.Drawing.Size(929, 360);
+            this.dgvCtmList.Size = new System.Drawing.Size(1062, 450);
             this.dgvCtmList.TabIndex = 4;
             // 
             // nameDataGridViewTextBoxColumn
@@ -149,9 +151,9 @@ namespace DKClinic.EmployeeProgram
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Gulim", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.Location = new System.Drawing.Point(88, 388);
+            this.label1.Location = new System.Drawing.Point(101, 485);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 40);
+            this.label1.Size = new System.Drawing.Size(130, 50);
             this.label1.TabIndex = 8;
             this.label1.Text = "이름 : ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -159,10 +161,10 @@ namespace DKClinic.EmployeeProgram
             // txbName
             // 
             this.txbName.Font = new System.Drawing.Font("Gulim", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txbName.Location = new System.Drawing.Point(214, 388);
+            this.txbName.Location = new System.Drawing.Point(245, 485);
             this.txbName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txbName.Name = "txbName";
-            this.txbName.Size = new System.Drawing.Size(293, 44);
+            this.txbName.Size = new System.Drawing.Size(334, 53);
             this.txbName.TabIndex = 9;
             this.txbName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -170,18 +172,23 @@ namespace DKClinic.EmployeeProgram
             // 
             this.btnSearch.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnSearch.Font = new System.Drawing.Font("Gulim", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnSearch.Location = new System.Drawing.Point(529, 388);
+            this.btnSearch.Location = new System.Drawing.Point(605, 485);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(102, 42);
+            this.btnSearch.Size = new System.Drawing.Size(117, 52);
             this.btnSearch.TabIndex = 10;
             this.btnSearch.Text = "검색";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // bgwSearch
+            // 
+            this.bgwSearch.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwSearch_DoWork);
+            this.bgwSearch.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwSearch_RunWorkerCompleted);
+            // 
             // EmployeeManageCustomerControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.btnSearch);
@@ -193,7 +200,7 @@ namespace DKClinic.EmployeeProgram
             this.Controls.Add(this.dgvCtmList);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "EmployeeManageCustomerControl";
-            this.Size = new System.Drawing.Size(1104, 538);
+            this.Size = new System.Drawing.Size(1262, 672);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCtmList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customerBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -215,5 +222,7 @@ namespace DKClinic.EmployeeProgram
         private System.Windows.Forms.DataGridViewTextBoxColumn genderDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn birthdateDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn cellphoneDataGridViewTextBoxColumn;
+        private System.ComponentModel.BackgroundWorker bgwSearch;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
